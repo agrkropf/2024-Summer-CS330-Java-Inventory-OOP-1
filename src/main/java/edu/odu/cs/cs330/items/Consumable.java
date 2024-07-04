@@ -39,6 +39,9 @@ public class Consumable extends Item {
     public Consumable(Consumable src)
     {
         // Complete this method
+        super(src.name, true);
+        this.effect = src.effect;
+        this.uses = src.uses;
     }
 
     /**
@@ -87,9 +90,20 @@ public class Consumable extends Item {
     @Override
     public void read(Scanner snr)
     {
-        super.name = snr.next();
+        if (snr.hasNextLine()) {
+            String input = snr.nextLine();
+            String[] parts = input.split(" ");
 
-        // Complete this method
+            if (parts.length == 3) {
+                super.name = parts[0];
+                this.effect = parts[1];
+                this.uses = Integer.parseInt(parts[2]);
+            } else {
+                throw new IllegalArgumentException("Invalid input format.");
+            }
+        } else {
+            throw new IllegalArgumentException("Input line is missing.");
+        }
     }
 
     /**
@@ -98,7 +112,7 @@ public class Consumable extends Item {
     @Override
     public Item clone()
     {
-        return null;
+        return new Consumable(this);
     }
 
     /**
@@ -107,6 +121,7 @@ public class Consumable extends Item {
     @Override
     public String toString()
     {
-        return "Implement this function";
+        return String.format("  Nme: %s\n  Eft: %s\n  Use: %d\n", 
+            super.name, this.effect, this.uses);
     }
 }

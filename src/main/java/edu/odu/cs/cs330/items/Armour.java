@@ -47,6 +47,13 @@ public class Armour extends Item {
     public Armour()
     {
         // Initialize all data members (including those inherited from Item)
+        super("", false);
+        this.durability = 0;
+        this.defense = 0;
+        this.material = "";
+        this.modifier = "";
+        this.modiferLevel = 0;
+        this.element = "";
     }
 
     /**
@@ -57,6 +64,13 @@ public class Armour extends Item {
     public Armour(Armour src)
     {
         // Set and/or copy data members for *this* object based on *src*.
+        super(src.name, false);
+        this.durability = src.durability;
+        this.defense = src.defense;
+        this.material = src.material;
+        this.modifier = src.modifier;
+        this.modiferLevel = src.modiferLevel;
+        this.element = src.element;
     }
 
     /**
@@ -189,9 +203,24 @@ public class Armour extends Item {
     @Override
     public void read(Scanner snr)
     {
-        super.name   = snr.next();
+        if (snr.hasNextLine()) {
+            String input = snr.nextLine();
+            String[] parts = input.split(" ");
 
-        // Complete this method
+            if (parts.length == 7) {
+                super.name = parts[0];
+                this.material = parts[1];
+                this.durability = Integer.parseInt(parts[2]);
+                this.defense = Integer.parseInt(parts[3]);
+                this.modifier = parts[4];
+                this.modiferLevel = Integer.parseInt(parts[5]);
+                this.element = parts[6];
+            } else {
+                throw new IllegalArgumentException("Invalid input format.");
+            }
+        } else {
+            throw new IllegalArgumentException("Input line is missing.");
+        }
     }
 
     /**
@@ -201,7 +230,7 @@ public class Armour extends Item {
     public Item clone()
     {
         // Replace the next line
-        return null;
+        return new Armour(this);
     }
 
     /**
@@ -210,7 +239,8 @@ public class Armour extends Item {
     @Override
     public String toString()
     {
-        return "Implement This Function";
+        return String.format("  Nme: %s\n  Dur: %d\n  Def: %d\n  Mtl: %s\n  Mdr: %s (Lvl %d)\n  Emt: %s\n",
+                super.name, this.durability, this.defense, this.material, this.modifier, this.modiferLevel, this.element);
     }
 }
 
